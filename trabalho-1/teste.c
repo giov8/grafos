@@ -23,8 +23,24 @@ int main(void) {
   printf("\t grau mínimo igual a %d;\n", g_min);
 
   g_medio = grau_medio(g);
-  printf("\t grau médio igual a %d.\n\n", g_medio);
+  printf("\t grau médio igual a %d.\n", g_medio);
     
+  if (regular(g))
+    printf("\t O grafo é regular.\n");
+  else
+    printf("\t O grafo NÃO é regular.\n");
+
+  if (completo(g))
+    printf("\t O grafo é completo.\n");
+  else
+    printf("\t O grafo NÃO é completo.\n");
+
+  if (conexo(g))
+    printf("\t O grafo é conexo.\n");
+  else
+    printf("\t O grafo NÃO é conexo.\n");
+
+  printf("\n");
   escreve_grafo(g);
   destroi_grafo(g);
 
