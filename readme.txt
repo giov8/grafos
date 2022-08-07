@@ -89,8 +89,7 @@ Calcula o número de triângulos (subgrafos completos de 3 vértices ou quantida
 A implementação realizada usa multiplicação de matrizes. É calculada a (matriz_adjacencia(g))³. A seguir, é feito o cálculo do traço da (matriz_adjacencia(g))³. Como o g é não-direcionado e são buscadas cliques de tamanho 3, o valor do traço é dividido por 6 (2 * 3). 
 Devolve o número de triângulos de g. 
 
-Obs. importante: apesar desta implementação para contar o número de triângulos de um grafo ser simples e relativamente rápida, para grafos grandes
-torna-se inviável, pois a complexidade de memória é da ordem de θ(n²), sendo n o número de vértices de g.
+Obs. importante: apesar desta implementação para contar o número de triângulos de um grafo ser simples e relativamente rápida, para grafos grandes torna-se inviável, pois a complexidade de memória é da ordem de θ(n²), sendo n o número de vértices de g.
 
 - int **matriz_adjacencia(grafo g)
 Representa g por uma matriz de adjacência. Devolve uma matriz de adjacência de g onde as linhas/colunas estão ordenadas do mesmo modo que agfstnode() e agnxtnode() em libcgraph.
