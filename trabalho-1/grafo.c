@@ -298,8 +298,62 @@ int conexo(grafo g) {
 
 // -----------------------------------------------------------------------------
 int bipartido(grafo g) {
+
+  if (!g) {
+    fprintf(stderr, "Erro: não há grafo em memória.\n");
+    exit(-2);    
+  }
   
-  return 0;
+  int n = n_vertices(g);
+  int pilha_tam = 0;
+
+  // struct para associar vertice a cor
+  typedef struct vertice_colorido {
+        vertice v;
+        int cor;
+    } vertice_colorido;
+
+    vertice_colorido vertices[n];
+    vertice_colorido pilha[n];
+    vertice_colorido u, v;
+
+    // Colore todos vertices de "branco"
+    int i = 0;
+    for (vertice w = agfstnode(g); w; w = agnxtnode(g, w)) {
+        vertices[i].v = w;
+        vertices[i].cor = 0;
+        i++;
+    }
+
+    for (i = 0; i < n; i++) {
+
+      // se vértice for branco, pinta
+      if(!vertices[i].cor) {
+        vertices[i].cor = 1;
+        pilha[pilha_tam] = vertices[i];
+        pilha_tam++;
+      }
+
+      while (pilha_tam > 0) {
+        pilha_tam--;
+        v = pilha[pilha_tam];
+
+        for (int j = 0; j < n; j++) {         
+          // verifica vizinhos
+          if (vizinho(g, vertices[j].v, v.v)) {
+            if (!vertices[j].cor) {
+              vertices[j].cor = (v.cor%2) + 1;
+
+              pilha[pilha_tam] = vertices[j];
+              pilha_tam++;
+            }
+            else if (vertices[j].cor == v.cor) return 0;
+          }
+        }
+      }
+    }
+
+  return 1;
 }
 
 // -----------------------------------------------------------------------------

@@ -40,6 +40,11 @@ int main(void) {
   else
     printf("\t O grafo NÃO é conexo.\n");
 
+  if (bipartido(g))
+    printf("\t O grafo é bipartido.\n");
+  else
+    printf("\t O grafo NÃO é bipartido.\n");
+
   printf("\nMatriz adjacencia: \n");
   imprimir_matriz_adjacencia(matriz_adjacencia(g), num_v);
 
