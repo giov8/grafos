@@ -311,11 +311,87 @@ int n_triangulos(grafo g) {
 // -----------------------------------------------------------------------------
 int **matriz_adjacencia(grafo g) {
   
-  return NULL;
+  if (!g) {
+    fprintf(stderr, "Erro: não há grafo em memória.\n");
+    exit(-2);    
+  }
+
+  int n = n_vertices(g);
+  int i, j;
+
+  // Alocação de memória
+  int **matriz = malloc ((size_t)n * sizeof(int*));
+  for (i = 0; i < n; i++) {
+    matriz[i] = (int*) malloc((size_t)n * sizeof(int));
+  }
+
+  i = 0;
+  j = 0;
+  for (vertice v = agfstnode(g); v; v = agnxtnode(g, v)) {
+    j = 0;
+    for (vertice u = agfstnode(g); u; u = agnxtnode(g, u)) {
+
+      if (v == u) {
+        matriz[i][j] = 0;
+        j++;
+        continue;
+      }
+
+      if (vizinho(g, u, v)) {
+        matriz[i][j] = 1;
+      }
+      
+      else {
+        matriz[i][j] = 0;
+      }
+
+      j++;
+    }
+    i++;
+  }
+
+  return matriz;
+}
+
+void imprimir_matriz_adjacencia(int **matriz, int n) {
+
+  if (!matriz) {
+    fprintf(stderr, "Erro: não há matriz adjascência em memória.\n");
+    exit(-5);    
+  }
+
+  for (int i = 0; i < n; i++) {
+    for (int j = 0; j < n; j++)
+      printf("%d ", matriz[i][j]);
+    printf("\n");
+  }
+
 }
 
 // -----------------------------------------------------------------------------
 grafo complemento(grafo g) {
+
+  if (!g) {
+    fprintf(stderr, "Erro: não há grafo em memória.\n");
+    exit(-2);    
+  }
+
+  grafo complemento = agopen("g-1", Agstrictundirected, NULL);
+  vertice v, u;
+
+  // v(g) = v(g-1)
+  for (u = agfstnode(g); u; u = agnxtnode(g, u)) {
+    agnode(complemento, agnameof(u), TRUE);
+  }
+
+  // v(g-1) = (n 2) - v(g)
+  for (u = agfstnode(g); u; u = agnxtnode(g, u)) {
+    for (v = agnxtnode(g, u); v; v = agnxtnode(g, v)) {
+      if ( !vizinho(g, u, v) ) {
+          agedge(complemento, agnode(complemento, agnameof(u), FALSE), agnode(complemento, agnameof(v), FALSE), NULL, TRUE);
+      }
+    }
+  }
   
-  return NULL;
+  return complemento;
 }

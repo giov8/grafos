@@ -40,6 +40,12 @@ int main(void) {
   else
     printf("\t O grafo NÃO é conexo.\n");
 
+  printf("\nMatriz adjacencia: \n");
+  imprimir_matriz_adjacencia(matriz_adjacencia(g), num_v);
+
+  printf("\nComplemento: \n");
+  imprimir_matriz_adjacencia(matriz_adjacencia(complemento(g)), num_v);
+
   printf("\n");
   escreve_grafo(g);
   destroi_grafo(g);
