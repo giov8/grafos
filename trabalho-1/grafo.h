@@ -86,6 +86,7 @@ int n_triangulos(grafo g);
 // em libcgraph
 
 int **matriz_adjacencia(grafo g);
+void imprimir_matriz_adjacencia(int **matriz, int n);
 
 //------------------------------------------------------------------------------
 // devolve o grafo complementar a g
