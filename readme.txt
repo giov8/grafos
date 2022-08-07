@@ -1,6 +1,8 @@
 <h1>Implementação de uma biblioteca básica biblioteca para análise de grafos não-direcionados</h1>
 
-Trabalho desenvolvido por Giovani G. Marciniak e Marisa Sel Franco, graduandos do curso de bacharelado em Informática Biomédica da UFPR, para a disciplina de CI165 - Algoritmos e Teoria dos Grafos, ministrada pelo prof. Dr. Renato Carmo, - conforme especificação disponível na [página da disciplina] (https://www.inf.ufpr.br/renato/ci1065/trabalho-1.html/). 
+Trabalho desenvolvido por Giovani G. Marciniak e Marisa Sel Franco, graduandos do curso de bacharelado em Informática Biomédica da UFPR, 
+para a disciplina de CI165 - Algoritmos e Teoria dos Grafos, ministrada pelo prof. Dr. Renato Carmo, - conforme especificação disponível 
+na [página da disciplina] (https://www.inf.ufpr.br/renato/ci1065/trabalho-1.html/). 
 
 O objetivo era desenvolver uma biblioteca básica para análise de grafos em C, implementando no arquivo 
 ```
@@ -83,7 +85,12 @@ Verifica se um grafo g é conexo usando uma busca em profundidade(DFS): devolve 
 Verifica se um grafo g é bipartido usando uma busca em profundidade(DFS) e colorindo os vértices: devolve 1 se g é bipartido e 0 caso contrário.
 
 - int n_triangulos(grafo g)
-Calcula o número de triângulos (subgrafos completos de 3 vértices ou quantidade de cliques de tamanho 3) em g (sendo g não-direcionado). A implementação realizada usa multiplicação de matrizes. É calculada a (matriz_adjacencia(g))³. A seguir, é feito o cálculo do traço da (matriz_adjacencia(g))³. Como o g é não-direcionado e são buscadas cliques de tamanho 3, o valor do traço é dividido por 6 (2 * 3). Devolve o número de triângulos de g. Obs. importante: apesar desta implementação para contar o número de triângulos de um grafo ser simples e relativamente rápida, para grafos grandes torna-se inviável, pois a complexidade de memória é da ordem de θ(n²), sendo n o número de vértices de g.
+Calcula o número de triângulos (subgrafos completos de 3 vértices ou quantidade de cliques de tamanho 3) em g (sendo g não-direcionado). 
+A implementação realizada usa multiplicação de matrizes. É calculada a (matriz_adjacencia(g))³. A seguir, é feito o cálculo do traço da (matriz_adjacencia(g))³. Como o g é não-direcionado e são buscadas cliques de tamanho 3, o valor do traço é dividido por 6 (2 * 3). 
+Devolve o número de triângulos de g. 
+
+Obs. importante: apesar desta implementação para contar o número de triângulos de um grafo ser simples e relativamente rápida, para grafos grandes
+torna-se inviável, pois a complexidade de memória é da ordem de θ(n²), sendo n o número de vértices de g.
 
 - int **matriz_adjacencia(grafo g)
 Representa g por uma matriz de adjacência. Devolve uma matriz de adjacência de g onde as linhas/colunas estão ordenadas do mesmo modo que agfstnode() e agnxtnode() em libcgraph.
