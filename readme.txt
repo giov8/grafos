@@ -13,7 +13,9 @@ a especificação de
 trabalho-1/grafo.h
 ```
 
-O programa usa a linguagem de descrição de grafos dot, implementada pelo pacote de software GraphViz. O grafo é recebido pelo programa via entrada padrão. Parte das funções principais que compõem a biblioteca usou basicamente funções nativas do pacote graphviz para C encapsuladas e, portanto, exigiu uma implementação bastante simples: 
+O programa usa a linguagem de descrição de grafos dot, implementada pelo pacote de software GraphViz. O grafo é recebido pelo programa via 
+entrada padrão. Parte das funções principais que compõem a biblioteca usou basicamente funções nativas do pacote graphviz para C encapsuladas
+e, portanto, exigiu uma implementação bastante simples: 
 
 - grafo le_grafo(void);
 - void destroi_grafo(grafo g);
@@ -22,7 +24,9 @@ O programa usa a linguagem de descrição de grafos dot, implementada pelo pacot
 - int n_arestas(grafo g);
 - int grau(vertice v, grafo g).
 
-As demais funções exigiram o desenvolvimento de algoritmos mais complexos. Essas funções mais complexas também se utilizam de funções nativas do pacote graphviz para C e, em alguns casos, demandaram a criação de funções auxiliares para melhor modularização e organização do código.
+As demais funções exigiram o desenvolvimento de algoritmos mais complexos. Essas funções mais complexas também se utilizam de funções 
+nativas do pacote graphviz para C e, em alguns casos, demandaram a criação de funções auxiliares para melhor modularização e organização
+do código.
 
 ## Dependências:
 
@@ -94,13 +98,15 @@ Obs. importante: apesar desta implementação para contar o número de triângul
 torna-se inviável, pois a complexidade de memória é da ordem de θ(n²), sendo n o número de vértices de g.
 
 - int **matriz_adjacencia(grafo g)
-Representa g por uma matriz de adjacência. Devolve uma matriz de adjacência de g onde as linhas/colunas estão ordenadas do mesmo modo que agfstnode() e agnxtnode() em libcgraph.
+Representa g por uma matriz de adjacência. Devolve uma matriz de adjacência de g onde as linhas/colunas estão ordenadas do mesmo modo 
+que agfstnode() e agnxtnode() em libcgraph.
 
 - void imprimir_matriz_adjacencia(int **matriz, int n)
 Imprime na saída padrão a matriz de adjacência de g.
 
 - grafo complemento(grafo g)
-Devolve o grafo h que é complementar ao grafo g, dado que tal V(H) = V(G) e dois vértices de H são adjacentes se e somente se eles não são adjacentes em G.
+Devolve o grafo h que é complementar ao grafo g, dado que tal V(H) = V(G) e dois vértices de H são adjacentes se e somente se eles não são 
+adjacentes em G.
 
 ## Funções auxiliares:
 
@@ -118,3 +124,10 @@ Multiplica duas matrizes quadradas de tamanho n: devolve a matriz resultante.
 
 - int calculaTraco(int **matriz, int n)
 Calcula o traço de uma matriz quadradada de tamanho n, ou seja, a soma dos elementos de sua diagonal principal.
+
+## Observações finais:
+
+No momento da compilação do código usando o makefile, são exibidos alguns "warnings" devido às flags de compilação.
+No entanto, nenhum deles afeta o funcionamento da biblioteca aparentemente.
+
+Há comentários complementares ao longo do código que explicam de forma mais esmiuçada algumas das implementações de funções mais complexas.
