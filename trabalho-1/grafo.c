@@ -234,34 +234,8 @@ int vizinho(grafo g, vertice u, vertice v) {
 }
 
 // -----------------------------------------------------------------------------
-/* Adiciona um vertice v ao conjunto*/
-void adiciona_ao_conjunto(vertice v, vertice **conjunto, int *tam) {
-  printf("add ao conjundo\n");
-
-  if (!v) {
-  fprintf(stderr, "Erro: vértice inválido.\n");
-  exit(-3);    
-  }
-
-  if (!conjunto) {
-  fprintf(stderr, "Erro: conjunto inválido.\n");
-  exit(-4);    
-  }
-
-  printf("aqui\n");
-  
-  printf("antes de atribuir\n");
-  conjunto[*tam] = v;
-  printf("TAM ANTES %d\n", *tam);
-  *tam += 1;
-  printf("TAM DEPOIS %d\n", *tam);
-  printf("add ao conjundo -- saiu\n");
-}
-
-// -----------------------------------------------------------------------------
 /* Verifica se um vertice v está contido em um conjunto de tamanho tam*/
-int contido_no_conjunto(vertice v, vertice *conjunto, int tam) {
-  printf("contido conjundo\n");
+int contido_no_conjunto(vertice v, vertice conjunto[], int tam) {
 
   if (!v) {
   fprintf(stderr, "Erro: vértice inválido.\n");
@@ -278,37 +252,7 @@ int contido_no_conjunto(vertice v, vertice *conjunto, int tam) {
     if (v == conjunto[i])
       return 1;
   
-  printf("contido conjundo ---saiu\n");
   return 0;
-}
-
-// -----------------------------------------------------------------------------
-void visita(grafo g, vertice v, vertice **visitado, int *visitado_tam) {
-
-  if (!g) {
-    fprintf(stderr, "Erro: não há grafo em memória.\n");
-    exit(-2);    
-  }
-  
-  if (!v) {
-  fprintf(stderr, "Erro: vértice inválido.\n");
-  exit(-3);    
-  }
-
-  if (!visitado) {
-  fprintf(stderr, "Erro: conjunto inválido.\n");
-  exit(-4);    
-  }
-
-  printf("visita\n");
-  adiciona_ao_conjunto(v, visitado, visitado_tam);
-
-  // percorre vértices e verifica se é vizinho
-  for (vertice u = agnxtnode(g, v); u; u = agnxtnode(g, u))
-     if (vizinho(g, u, v))
-      if (!contido_no_conjunto(u, *visitado, *visitado_tam))
-        visita(g, u, visitado, visitado_tam); 
-  printf("visita --saiu\n");    
 }
 
 // -----------------------------------------------------------------------------
@@ -320,29 +264,36 @@ int conexo(grafo g) {
   }
 
   int n = n_vertices(g);
-  vertice v, *visitado;
-  int *visitado_tam;
+  vertice v, visitado[n], pilha[n];
+  int visitado_tam, pilha_tam, n_vizinhos;
 
-  visitado = (vertice *) malloc((size_t) n * sizeof(vertice));
-  *visitado_tam = 0;
+  pilha[0] = agfstnode(g);
+  pilha_tam = 1;
+  visitado_tam = 0;
+  n_vizinhos = 0;
 
-  printf("1\n");
-  // zera todos os elementos do conjunto visitado
-  for (int i = 0; i < n; i++) visitado[i] = NULL;
+  while (pilha_tam != 0) {
+    pilha_tam--;
+    v = pilha[pilha_tam];
 
-  printf("2\n");
-  // faz uma visita pelos vértices
-  v = agfstnode(g);
-  visita(g, v, &visitado, visitado_tam);
+    if (!contido_no_conjunto(v, visitado, visitado_tam)) {
+      for (vertice u = agnxtnode(g, v); u; u = agnxtnode(g, u))
+        if (vizinho(g, u, v))
+          if (!contido_no_conjunto(u, visitado, visitado_tam)) {
+            pilha[pilha_tam] = u;
+            pilha_tam++;
+            n_vizinhos++;
+          }
+    }
 
-  printf("3\n");
+    visitado[visitado_tam] = v;
+    visitado_tam++;
+  }
 
-  // se nem todos os vertices não foram visitados
-  printf("visitado tam: %d", *visitado_tam);
-  if (visitado_tam < n+1)
-    return 0;
-
-  return 1;
+  if (n_vizinhos == n-1)
+    return 1;
+  
+  return 0;
 }
 
 // -----------------------------------------------------------------------------
