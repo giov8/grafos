@@ -12,6 +12,19 @@
 
 typedef Agedge_t *aresta;
 
+typedef struct vertice_colorido_t {
+    vertice v;
+    long long cor;
+  } vertice_colorido;
+
+// Protótipos das funções internas
+int k_regular(grafo g, int k);
+int vizinho(grafo g, vertice u, vertice v);
+int contido_no_conjunto(vertice v, vertice conjunto[], int tam);
+int **multiplica_matrizes(int **matriz_a, int **matriz_b, int n);
+int calculaTraco(int **matriz, int n);
+
+
 //------------------------------------------------------------------------------
 grafo le_grafo(void) {
 
@@ -268,8 +281,20 @@ int conexo(grafo g) {
   }
 
   int n = n_vertices(g);
-  vertice v, visitado[n], pilha[n];
   int visitado_tam, pilha_tam, n_vizinhos;
+  vertice v, *visitado, *pilha;
+
+  visitado = (vertice*) malloc((size_t)n * sizeof(vertice));
+  if (!visitado) {
+    fprintf(stderr, "Erro: não foi possível alocar o vetor visitado na função conexo.\n");
+    exit(-6);    
+  }
+
+  pilha = (vertice*) malloc((size_t)n * sizeof(vertice));
+  if (!pilha) {
+    fprintf(stderr, "Erro: não foi possível alocar o vetor pilha na função conexo.\n");
+    exit(-6);    
+  }
 
   pilha[0] = agfstnode(g);
   pilha_tam = 1;
@@ -312,16 +337,19 @@ int bipartido(grafo g) {
   
   int n = n_vertices(g);
   int pilha_tam = 0;
+  vertice_colorido v, *vertices, *pilha;
 
-  // struct para associar vértice a cor
-  typedef struct vertice_colorido {
-    vertice v;
-    int cor;
-  } vertice_colorido;
+  vertices = (vertice_colorido*) malloc((size_t)n * sizeof(vertice_colorido));
+  if (!vertices) {
+    fprintf(stderr, "Erro: não foi possível alocar o vetor vertices na função bipartido.\n");
+    exit(-7);    
+  }
 
-  vertice_colorido vertices[n];
-  vertice_colorido pilha[n];
-  vertice_colorido u, v;
+  pilha = (vertice_colorido*) malloc((size_t)n * sizeof(vertice_colorido));
+  if (!pilha) {
+    fprintf(stderr, "Erro: não foi possível alocar o vetor pilha na função bipartido.\n");
+    exit(-6);    
+  }
 
   // colore todos vértices de "branco" (representado pelo 0)
   int i = 0;
@@ -510,7 +538,9 @@ grafo complemento(grafo g) {
     exit(-2);    
   }
 
-  grafo complemento = agopen("g-1", Agstrictundirected, NULL);
+  char nome[] = "g-1"; 
+
+  grafo complemento = agopen(nome, Agstrictundirected, NULL);
   vertice v, u;
 
   for (u = agfstnode(g); u; u = agnxtnode(g, u)) 
