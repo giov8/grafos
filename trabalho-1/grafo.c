@@ -319,6 +319,9 @@ int conexo(grafo g) {
     visitado_tam++;
   }
 
+  free(visitado);
+  free(pilha);
+
   if (n_vizinhos == n-1)
     return 1;
   
@@ -379,12 +382,20 @@ int bipartido(grafo g) {
             pilha[pilha_tam] = vertices[j];
             pilha_tam++;
           }
-          else if (vertices[j].cor == v.cor) return 0;
+          else if (vertices[j].cor == v.cor) {
+            free(vertices);
+            free(pilha);
+
+            return 0;
+          }
         }
       }
     }
   }
 
+  free(vertices);
+  free(pilha);
+  
   return 1;
 }
 
