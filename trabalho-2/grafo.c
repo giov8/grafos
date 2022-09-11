@@ -61,6 +61,7 @@ void destroi_grafo(grafo g) {
   }
   agfree(g, NULL);
 }
+
 //------------------------------------------------------------------------------
 grafo escreve_grafo(grafo g) {
   
@@ -86,6 +87,7 @@ int n_vertices(grafo g) {
 
   return num_vertices;
 }
+
 // -----------------------------------------------------------------------------
 int n_arestas(grafo g) {
 
@@ -285,7 +287,7 @@ int contido_no_conjunto(vertice v, vertice conjunto[], int tam) {
 }
 
 // -----------------------------------------------------------------------------
-/* Verifica se um grafo G é conexo usando uma busca em profundidade(DFS):
+/* Verifica se um grafo G não-direcionado é conexo usando uma busca em profundidade(DFS):
    retorna 1 caso seja e 0 caso contrário */
 int conexo(grafo g) {
 
@@ -293,6 +295,11 @@ int conexo(grafo g) {
     fprintf(stderr, "Erro: não há grafo em memória.\n");
     exit(-2);    
   }
+
+  if (agisdirected(g)) {
+    fprintf(stderr, "Não é possível avaliar se G é conexo porque a função conexo recebeu um grafo direcionado.\n");
+    exit(12);  
+  }  
 
   int n = n_vertices(g);
   int visitado_tam, pilha_tam, n_vizinhos;
@@ -343,7 +350,7 @@ int conexo(grafo g) {
 }
 
 // -----------------------------------------------------------------------------
-/* Verifica se um grafo G é bipartido usando uma busca em profundidade(DFS)
+/* Verifica se um grafo G não-direcionado é bipartido usando uma busca em profundidade(DFS)
    e colorindo os vértices: retorna 1 caso seja e 0 caso contrário */
 int bipartido(grafo g) {
 
@@ -351,7 +358,12 @@ int bipartido(grafo g) {
     fprintf(stderr, "Erro: não há grafo em memória.\n");
     exit(-2);    
   }
-  
+
+  if (agisdirected(g)) {
+    fprintf(stderr, "Não é possível avaliar se G é bipartido porque a função bipartido recebeu um grafo direcionado.\n");
+    exit(12);  
+  }  
+
   int n = n_vertices(g);
   int pilha_tam = 0;
   vertice_colorido v, *vertices, *pilha;
@@ -470,6 +482,11 @@ int n_triangulos(grafo g) {
   if (!g) {
     fprintf(stderr, "Erro: não há grafo em memória.\n");
     exit(-2);    
+  }
+
+  if (agisdirected(g)) {
+    fprintf(stderr, "Não é possível contar o número de triângulos de G porque a função n_triangulos recebeu um grafo direcionado.\n");
+    exit(11);  
   }
 
   int traco, num_cliques_3 = 0;
@@ -641,25 +658,23 @@ grafo decompoe(grafo g) {
   }
 
   if (agisundirected(g)) {
-    fprintf(stderr, "Não é possível decompor G porque a função recebeu um grafo não direcionado.\n");
+    fprintf(stderr, "Não é possível decompor G porque a função decompõe recebeu um grafo não direcionado.\n");
     exit(-8);  
   }
   
   int n = n_vertices(g);
-  printf("N vertices %d\n", n);
-
   vertice_at *vertices;
 
   vertices = (vertice_at*) malloc((size_t)n * sizeof(vertice_at));
   if (!vertices) {
     fprintf(stderr, "Erro: não foi possível alocar o vetor vertices na função decompõe.\n");
-    exit(-7);    
+    exit(-9);    
   }
 
   pos_ordem = (int*) malloc((size_t)n * sizeof(int));
   if (!pos_ordem) {
     fprintf(stderr, "Erro: não foi possível alocar o vetor pos_ordem na função decompõe.\n");
-    exit(-7);    
+    exit(-10);    
   }
 
   // inicializa estrutura de vértices com atributos
@@ -704,7 +719,6 @@ grafo decompoe(grafo g) {
     agsubg(g, NULL, TRUE);
   }
 
-
   int id_componente = 1;
   // para cada subgrafo de G
   for (grafo subg = agfstsubg(g); subg; subg = agnxtsubg(subg)) {
@@ -724,6 +738,7 @@ grafo decompoe(grafo g) {
           // se tem um arco do vértice j para o vértice k
           if (vizinho(g, vertices[j].v, vertices[k].v)) {
             aresta arco_jk = agedge(g,vertices[j].v, vertices[k].v, NULL, FALSE);
+            // cria um arco no subgrafo correspondente ao componente atual
             agsubedge(subg, arco_jk, TRUE);
           }
       }
