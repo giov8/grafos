@@ -65,6 +65,8 @@ conexo cada vértice de g pertence.
 
 <h2> Detalhes sobre a biblioteca básica para análise de grafos não-direcionados desenvolvida no trabalho 1 <h2>
 
+## Informações gerais:
+
 Parte das funções principais que compõem a biblioteca usou basicamente funções nativas do pacote graphviz para C encapsuladas
 e, portanto, exigiu uma implementação bastante simples: 
 
