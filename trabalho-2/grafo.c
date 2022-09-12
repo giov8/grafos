@@ -714,9 +714,11 @@ grafo decompoe(grafo g) {
     }
   }
 
+  char name[8];
   // cria os sugbrafos de G vazios
   for (i = 0; i < num_componentes; i++) {
-    agsubg(g, NULL, TRUE);
+    sprintf(name, "%d", i);
+    agsubg(g, name, TRUE);
   }
 
   int id_componente = 1;

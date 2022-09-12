@@ -44,14 +44,6 @@ No terminal, execute:
 - grafo decompoe(grafo g)
 Decompõe um grafo direcionado g em componentes fortes e acrescenta à lista de subgrafos de g cada um de seus componentes fortes. Devolve G.
 
-ATENÇÃO: para testar funcionamento da função "decompoe(g)", inclua no programa principal após a sua chamada o seguinte trecho de código:
-
-```
-  for (grafo sub = agfstsubg(g); sub; sub = agnxtsubg(sub))
-    escreve_grafo(sub);
-```
-Este trecho de código irá percorrer a lista de sugrafos de g, ou seja, os componentes fortes do grafo g e imprimi-los na saída padrão.
-
 ## Funções auxiliares:
 
 - void busca_profundidade(grafo g, vertice_at *vertices, int r)
