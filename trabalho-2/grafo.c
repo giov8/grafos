@@ -600,8 +600,8 @@ grafo complemento(grafo g) {
 //------------------------------------------------------------------------------
 /* Recebe um grafo direcionado G, um vetor de vértices e um vértice. Faz uma 
    busca em profundidade (DFS) recursiva em G, tratando-o como G transposto. 
-   Insere os valores de pós-ordem de cada vértice de G transposto no vetor global 
-   de pós-ordem, que será usado na decomposição de G */
+   Insere os valores de pós-ordem de cada vértice de G transposto de forma reversa
+   no vetor global de pós-ordem, que será usado na decomposição de G */
 
 void busca_profundidade(grafo g, vertice_at *vertices, int r) {
 
@@ -626,7 +626,7 @@ void busca_profundidade(grafo g, vertice_at *vertices, int r) {
 //------------------------------------------------------------------------------
 /* Recebe um grafo direcionado G, um vetor de vértices e um vértice. Faz uma 
    busca em profundidade (DFS) recursiva em G e marca a qual componente fortemente 
-   conexo cada vértice pertencente*/
+   conexo cada vértice de G pertence*/
 
 void decompoe_vizinhanca(grafo g, vertice_at *vertices, int r) {
 
@@ -648,7 +648,7 @@ void decompoe_vizinhanca(grafo g, vertice_at *vertices, int r) {
 
 //------------------------------------------------------------------------------
 /* Decompõe um grafo direcionado G em componentes fortes e acrescenta à lista de 
-   subgrafos de g cada um de seus componentes fortes. Devolve é G */
+   subgrafos de g cada um de seus componentes fortes. Devolve G */
 
 grafo decompoe(grafo g) {
   
