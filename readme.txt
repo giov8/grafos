@@ -1,32 +1,22 @@
-<h1>Implementação de uma biblioteca básica biblioteca para análise de grafos não-direcionados</h1>
+<h1> Implementação de uma função que detecta os componentes fortes de um grafo direcionado</h1>
 
 Trabalho desenvolvido por Giovani G. Marciniak e Marisa Sel Franco, graduandos do curso de bacharelado em Informática Biomédica da UFPR, 
 para a disciplina de CI165 - Algoritmos e Teoria dos Grafos, ministrada pelo prof. Dr. Renato Carmo, - conforme especificação disponível 
-na [página da disciplina] (https://www.inf.ufpr.br/renato/ci1065/trabalho-1.html/). 
+na [página da disciplina] (https://www.inf.ufpr.br/renato/ci1065/trabalho-2.html). 
 
-O objetivo era desenvolver uma biblioteca básica para análise de grafos em C, implementando no arquivo 
+Neste segundo trabalho da disciplina, o objetivo era desenvolver uma função que detecta os componentes fortes de um grafo direcionado em C. A função foi acrescentada à biblioteca básica para análise de grafos não-direcionados - desenvolvida no trabalho 1 da disciplina e cuja especificação está disponível 
+na [seguinte página] (https://www.inf.ufpr.br/renato/ci1065/trabalho-1.html/). 
+
+A função foi implementada no arquivo
 ```
 grafo.c
 ```
-a especificação de
+e sua especificação - bem como a da biblioteca criada no trabalho 1 - está em
 ```
-trabalho-1/grafo.h
+trabalho-2/grafo.h
 ```
 
-O programa usa a linguagem de descrição de grafos dot, implementada pelo pacote de software GraphViz. O grafo é recebido pelo programa via 
-entrada padrão. Parte das funções principais que compõem a biblioteca usou basicamente funções nativas do pacote graphviz para C encapsuladas
-e, portanto, exigiu uma implementação bastante simples: 
-
-- grafo le_grafo(void);
-- void destroi_grafo(grafo g);
-- grafo escreve_grafo(grafo g);
-- int n_vertices(grafo g);
-- int n_arestas(grafo g);
-- int grau(vertice v, grafo g).
-
-As demais funções exigiram o desenvolvimento de algoritmos mais complexos. Essas funções mais complexas também se utilizam de funções 
-nativas do pacote graphviz para C e, em alguns casos, demandaram a criação de funções auxiliares para melhor modularização e organização
-do código.
+O programa usa a linguagem de descrição de grafos dot, implementada pelo pacote de software [GraphViz] (https://graphviz.org/pdf/cgraph.pdf). O grafo é recebido pelo programa via entrada padrão. 
 
 ## Dependências:
 
@@ -46,6 +36,49 @@ No terminal, execute:
 ```
 ./teste < <nome_arquivo.dot>
 ```
+
+<h2> Detalhes sobre a implementação da função que detecta os componentes fortes de um grafo direcionado <h2>
+
+## Função principal:
+
+- grafo decompoe(grafo g)
+Decompõe um grafo direcionado g em componentes fortes e acrescenta à lista de subgrafos de g cada um de seus componentes fortes. Devolve G.
+
+ATENÇÃO: para testar funcionamento da função "decompoe(g)", inclua no programa principal após a sua chamada o seguinte trecho de código:
+
+```
+  for (grafo sub = agfstsubg(g); sub; sub = agnxtsubg(sub))
+    escreve_grafo(sub);
+```
+Este trecho de código irá percorrer a lista de sugrafos de g, ou seja, os componentes fortes do grafo g e imprimi-los na saída padrão.
+
+## Funções auxiliares:
+
+- void busca_profundidade(grafo g, vertice_at *vertices, int r)
+Recebe um grafo direcionado g, um vetor de vértices e um vértice. Faz uma busca em profundidade (DFS) recursiva em g, tratando-o como G transposto 
+(em vez de percorrer a vizinhança de saída de G, percorre a vizinhança de entrada). Insere os valores de pós-ordem de cada vértice de G transposto 
+no vetor global "pos_ordem", de forma reversa. Esse vetor é usado na decomposição de G, na função "decompoe(g)".
+
+- void decompoe_vizinhanca(grafo g, vertice_at *vertices, int r)
+Recebe um grafo direcionado G, um vetor de vértices e um vértice. Faz uma busca em profundidade (DFS) recursiva em G e marca a qual componente fortemente 
+conexo cada vértice de g pertence.
+
+<h2> Detalhes sobre a biblioteca básica para análise de grafos não-direcionados desenvolvida no trabalho 1 <h2>
+
+Parte das funções principais que compõem a biblioteca usou basicamente funções nativas do pacote graphviz para C encapsuladas
+e, portanto, exigiu uma implementação bastante simples: 
+
+- grafo le_grafo(void);
+- void destroi_grafo(grafo g);
+- grafo escreve_grafo(grafo g);
+- int n_vertices(grafo g);
+- int n_arestas(grafo g);
+- int grau(vertice v, grafo g).
+
+As demais funções exigiram o desenvolvimento de algoritmos mais complexos. Essas funções mais complexas também se utilizam de funções 
+nativas do pacote graphviz para C e, em alguns casos, demandaram a criação de funções auxiliares para melhor modularização e organização
+do código.
+
 
 ## Funções principais que compõem a biblioteca:
 
@@ -83,10 +116,10 @@ Devolve 1 se g é regular e 0 caso contrário.
 Verifica se o grafo g é completo, ou seja, se E(G) = n(n-1)/2: devolve 1 se g é completo e 0 caso contrário.
 
 - int conexo(grafo g)
-Verifica se um grafo g é conexo usando uma busca em profundidade(DFS): devolve 1 se g é conexo e 0 caso contrário.
+Verifica se um grafo g (sendo g não-direcionado) é conexo usando uma busca em profundidade(DFS): devolve 1 se g é conexo e 0 caso contrário.
 
 - int bipartido(grafo g)
-Verifica se um grafo g é bipartido usando uma busca em profundidade(DFS) e colorindo os vértices: devolve 1 se g é bipartido e 0 caso contrário.
+Verifica se um grafo g (sendo g não-direcionado) é bipartido usando uma busca em profundidade(DFS) e colorindo os vértices: devolve 1 se g é bipartido e 0 caso contrário.
 
 - int n_triangulos(grafo g)
 Calcula o número de triângulos (subgrafos completos de 3 vértices ou quantidade de cliques de tamanho 3) em g (sendo g não-direcionado). 
@@ -127,7 +160,6 @@ Calcula o traço de uma matriz quadradada de tamanho n, ou seja, a soma dos elem
 
 ## Observações finais:
 
-No momento da compilação do código usando o makefile, são exibidos alguns "warnings" devido às flags de compilação.
-No entanto, nenhum deles afeta o funcionamento da biblioteca aparentemente.
+Todos os "warnings" causados pelas flags dde compilação presentes no Trabalho 1 foram corrigidos. No momento da compilação do código usando o makefile, não há mais mensagens de "warning".
 
 Há comentários complementares ao longo do código que explicam de forma mais esmiuçada algumas das implementações de funções mais complexas.
